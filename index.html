@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Сериалы, которые запомнились</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700&family=Onest:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* VOICE everyday, warm, personal — a list to show a friend over coffee
+   IDEA a home shelf of box sets: every series is a spine, then its card
+   PICTURE the shelf band: spines coloured by genre, width by number of seasons
+   COLOUR white / warm night ground, dark wood shelf, genre colours: red, blue, saffron, violet, pink, teal
+   TYPE Unbounded (display) + Onest (text), both with Cyrillic
+   LAYOUT title, shelf full-width, filters, cards grid; phone: shelf scrolls sideways, cards one column */
+:root{color-scheme:light dark;--bg:light-dark(#ffffff,#15120f);--ink:light-dark(#1b1712,#f3eee6);--mute:light-dark(#6b6358,#a89f92);--line:light-dark(#e6e0d6,#2d2822);--card:light-dark(#faf8f4,#1d1915);--wood:light-dark(#2a211a,#0c0a08);--chip:light-dark(#f1ece4,#29241e);--warn:light-dark(#fff1d6,#3a2c12);--warnink:light-dark(#7a4b00,#f3c76b)}
+:root[data-theme=light]{color-scheme:light}:root[data-theme=dark]{color-scheme:dark}
+*{box-sizing:border-box;min-width:0}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Onest,system-ui,sans-serif;overflow-x:clip}
+.wrap{max-width:1240px;margin:0 auto;padding:0 max(4vw,16px)}
+header{padding:clamp(28px,4vw,52px) 0 18px}
+h1{font:700 clamp(30px,5vw,48px)/1.05 Unbounded,sans-serif;letter-spacing:-.02em;margin:0;text-wrap:balance}
+.sub{color:var(--mute);margin:10px 0 0;max-width:60ch}
+.shelf{background:var(--wood);padding:28px 0 0;margin-top:8px}
+.rack{display:flex;align-items:flex-end;gap:4px;overflow-x:auto;padding:0 max(4vw,16px) 0;scrollbar-width:thin;max-width:1240px;margin:0 auto}
+.spine{flex:none;border:0;cursor:pointer;color:#fff;border-radius:3px 3px 0 0;position:relative;display:flex;align-items:center;justify-content:center;padding:10px 0;transition:transform .2s,opacity .2s;box-shadow:inset -5px 0 0 rgba(0,0,0,.18),inset 2px 0 0 rgba(255,255,255,.22)}
+.spine span{writing-mode:vertical-rl;transform:rotate(180deg);font:600 13px/1 Onest,sans-serif;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-height:100%}
+.spine::after{content:"";position:absolute;left:0;right:0;top:12px;height:3px;background:rgba(255,255,255,.35)}
+.spine:hover,.spine:focus-visible{transform:translateY(-8px)}
+.spine:focus-visible{outline:3px solid #fff;outline-offset:2px}
+.spine.off{opacity:.22}
+.board{height:16px;background:linear-gradient(#6b4a2e,#4a3220);box-shadow:0 6px 0 #2e1f14}
+.legend{display:flex;flex-wrap:wrap;gap:6px 16px;padding:18px 0 0;color:var(--mute);font-size:14px}
+.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:0}
+.controls{display:grid;gap:12px;padding:22px 0 8px;border-bottom:1px solid var(--line)}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.row b{font-weight:600;font-size:14px;color:var(--mute);width:5.5em;flex:none}
+.seg{display:flex;flex-wrap:wrap;gap:6px}
+.seg button{font:500 15px/1 Onest,sans-serif;min-height:40px;padding:0 14px;border-radius:20px;border:1px solid var(--line);background:var(--bg);color:var(--ink);cursor:pointer}
+.seg button:hover{border-color:var(--mute)}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.seg button:focus-visible,#q:focus-visible{outline:3px solid #2b59c3;outline-offset:2px}
+.seg button i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:7px}
+#q{font:16px Onest,sans-serif;height:44px;padding:0 14px;border-radius:22px;border:1px solid var(--line);background:var(--card);color:var(--ink);width:min(100%,340px)}
+.found{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 0 6px;color:var(--mute);font-size:14px}
+.found button{font:inherit;color:var(--ink);background:none;border:0;text-decoration:underline;cursor:pointer;padding:6px 0}
+h2{font:700 22px/1.1 Unbounded,sans-serif;letter-spacing:-.01em;margin:26px 0 14px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:10px;scroll-margin-top:16px;transition:box-shadow .3s}
+.card.flash{box-shadow:0 0 0 3px var(--c)}
+.top{display:flex;gap:12px;align-items:flex-start}
+.card h3{font:700 18px/1.2 Unbounded,sans-serif;margin:0;letter-spacing:-.01em}
+.orig{color:var(--mute);font-size:15px;margin-top:3px}
+.who{margin-left:auto;display:flex;gap:4px;flex:none}
+.who svg{width:22px;height:22px}
+.ic{display:inline-flex;margin-right:6px;vertical-align:-4px}.ic svg{width:18px;height:18px}
+.meta{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:15px}
+.meta .y{white-space:nowrap;font-weight:600}
+.st{font-size:13px;font-weight:600;padding:3px 9px;border-radius:10px;white-space:nowrap}
+.st.done{background:var(--chip);color:var(--mute)}
+.st.on{background:color-mix(in srgb,#0e9384 18%,transparent);color:light-dark(#0b6b60,#5fd3c4)}
+.desc{margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px}
+.tags span{font-size:13px;background:var(--chip);padding:3px 9px;border-radius:10px}
+.card{overflow:hidden}
+.art{margin:-18px -18px 4px;height:150px;position:relative;background:var(--c)}
+.art.photo{height:auto;aspect-ratio:16/10;background:#111;overflow:hidden}
+.art.contain img{object-fit:contain}
+.blur{position:absolute;inset:-20px;background-size:cover;background-position:center;filter:blur(18px) brightness(.55)}
+.art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.art svg{position:absolute;inset:0;width:100%;height:100%;display:block}
+.note{margin:0;padding:10px 12px;border-left:3px solid var(--c);background:var(--bg);border-radius:0 8px 8px 0}
+.note b{display:block;font-size:13px;color:var(--mute);margin-bottom:4px;font-weight:600}
+.note p{margin:0 0 6px}.note p:last-child{margin:0}
+.lnk{font-size:14px;color:var(--mute);margin-top:auto}
+.lnk a{color:inherit}
+.warn{margin:0;padding:8px 12px;background:var(--warn);color:var(--warnink);border-radius:8px;font-size:15px;font-weight:500}
+.empty{padding:40px 0;color:var(--mute)}
+footer{color:var(--mute);font-size:14px;padding:40px 0 48px}
+@media(max-width:600px){.row b{width:100%}.spine span{font-size:12px}}
+@media(prefers-reduced-motion:reduce){.spine,.card{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1>Сериалы, которые запомнились</h1>
+<p class="sub">Наша домашняя полка: что смотрели, что понравилось и что советуем. Нажмите на корешок, чтобы перейти к сериалу.</p>
+</header>
+</div>
+<section class="shelf" aria-label="Полка сериалов">
+<div class="rack" id="rack"></div>
+<div class="board"></div>
+</section>
+<div class="wrap">
+<div class="legend" id="legend"></div>
+<div class="controls">
+<div class="row"><b>Откуда</b><div class="seg" id="f-origin"></div></div>
+<div class="row"><b>Жанр</b><div class="seg" id="f-genre"></div></div>
+<div class="row"><b>Статус</b><div class="seg" id="f-status"></div></div>
+<div class="row"><b>Для кого</b><div class="seg" id="f-aud"></div></div>
+<div class="row"><b>Длина</b><div class="seg" id="f-len"></div></div>
+<div class="row"><b>Поиск</b><input id="q" type="search" placeholder="Название, актёр…" autocomplete="off"></div>
+</div>
+<div class="found"><span id="count"></span><button id="reset" type="button">Сбросить фильтры</button></div>
+<main id="list"></main>
+<footer>Годы и сезоны сверены в ноябре 2026 года. Для сериалов, которые ещё идут, указаны вышедшие сезоны.</footer>
+</div>
+<script>
+{
+/* ===== Данные. Чтобы добавить комментарий: note:"…", пометку: warn:"…", кто советует: who:["m"] / ["f"] / ["m","f"] ===== */
+const G={thr:["Триллер","#d7263d"],crime:["Криминал","#a23b16"],scifi:["Фантастика","#2b59c3"],myst:["Мистика и хоррор","#5b2a86"],drama:["Драма","#d48a00"],com:["Комедия","#e04f8a"],law:["Юридический","#0e7c86"],west:["Вестерн","#8a5a2b"]};
+const S=[
+{id:"bar",ru:"Бар «Один звонок»",origin:"ru",y1:2025,y2:null,seasons:1,status:"on",g:["myst","thr"],extra:"7 серий, продлён на 2-й сезон",desc:"Бар появляется то в одном месте, то в другом. Там можно минуту поговорить с умершим, но плата за звонок — раунд русской рулетки. Следователь ищет пропавшего сына, и все улики ведут в этот бар. Данила Козловский в роли бармена.",note:"Первый сериал Козловского после долгого перерыва.\nПродуманный, чуть мистический сериал про человеческие трагедии: серии слабо связаны друг с другом, не считая общей канвы, в каждой серии своя история. Шикарный подбор актёров — Козловский, Витроган и другие. Козловскому есть что сыграть, и он играет.",warn:"",img:"img/bar.jpg",who:["m","f"],imdb:"Bar Odin zvonok"},
+{id:"vamp",ru:"Вампиры средней полосы",origin:"ru",y1:2021,y2:2025,seasons:3,status:"done",g:["com","myst"],extra:"3-й сезон финальный",desc:"Вампиры тихо живут в Смоленске по строгим правилам, пока кто-то их не нарушает. Иронично, по-домашнему, с Юрием Стояновым в роли деда Славы.",note:"Славянское фэнтези с юмором, самоиронией и органично играющим главную роль Стояновым. Первый сезон самый сильный. В третьем история очевидным образом заканчивается, исключая возможность «сделать ещё несколько сезонов в том же духе».",warn:"Сильнее всего первый сезон",img:"img/vamp.jpg",fit:"contain",who:["m","f"],imdb:"Vampires of Midland"},
+{id:"radar",ru:"Радар",origin:"ru",y1:2026,y2:null,seasons:1,status:null,g:["scifi"],extra:"9 серий",desc:"1988 год, городок у радара ПРО. Шестиклассники идут искать упавший метеорит и сталкиваются с вторжением пришельцев. По повести Александра Мирера «Главный полдень»; атмосфера позднего СССР.",note:"Что-то вроде «страшилки», которую рассказали бы в пионерском лагере (по мотивам фильма «Посредник», скверно снятого в 90-е; я зачем-то тогда его посмотрел). Но «Радар» получился действительно неплох.",warn:"",img:"img/radar.jpg",fit:"contain",who:["m","f"],imdb:"Radar 2026 series"},
+{id:"topi",ru:"Топи",origin:"ru",y1:2021,y2:2021,seasons:1,status:"done",g:["myst","thr"],extra:"7 серий",desc:"Пятеро москвичей сбегают от своих проблем в монастырь у полузаброшенной деревни Топи. Поездка оборачивается цепью жутких событий. Сценарий Дмитрия Глуховского.",note:"Сериал по Глуховскому (книги нет, создавался сразу как сериал). Хтонь с элементами страшной сказки. Тягучий, безнадёжный, завораживающий.",warn:"",img:"img/topi.jpg",who:["m"],imdb:"Topi 2021"},
+{id:"slow",ru:"Хромые кони",alt:"Медленные лошади",en:"Slow Horses",origin:"w",y1:2022,y2:null,seasons:6,status:"on",g:["thr"],extra:"продлён на 7-й сезон",desc:"Отдел MI5, куда ссылают провинившихся агентов. Их неряшливый и язвительный шеф Джексон Лэмб (Гэри Олдман) раз за разом втягивает команду в настоящие операции.",note:"Гэри Олдман в главной роли: старый, нарочито противный и разочаровавшийся в жизни глава разведчиков, облажавшихся на своём карьерном пути, но не утративший хватки и готовый биться за своих людей. Такая смесь робота Бендера и Шерлока Холмса. И всё это в декорациях лондонских улочек.",warn:"",img:"img/slow.jpg",fit:"contain",who:["m"]},
+{id:"yell",ru:"Йеллоустоун",en:"Yellowstone",origin:"w",y1:2018,y2:2024,seasons:5,status:"done",g:["drama","west"],extra:"",desc:"Семья Даттонов во главе с Джоном (Кевин Костнер) удерживает крупнейшее ранчо Монтаны от застройщиков, резервации и властей. Неовестерн Тейлора Шеридана.",note:"Начинается как отличный бодрый сериал с непредсказуемым сюжетом и столкновением лбами ковбоев и веганов, индейцев в резервациях и «белых», экоактивистов, туристов, байкеров и тех, кто веками владеет землёй и развивает ранчо.\nК сожалению, 5-й сезон как будто перечёркивает многие смелые высказывания и превращается в малоубедительную победу одной из групп. Первые четыре сезона смотрятся одним махом.\nПятый я бы вообще не рекомендовал — лично меня он разочаровывает. Словно постаревший боксёр, кумир детства, который не сумел вовремя завершить карьеру: напропускал ударов, опозорился и проиграл нокаутом.",warn:"Смотреть сезоны 1–4, пятый не рекомендую",img:"img/yell.jpg",who:["m"]},
+{id:"mass",ru:"Полуночная месса",en:"Midnight Mass",origin:"w",y1:2021,y2:2021,seasons:1,status:"done",g:["myst","drama"],extra:"мини-сериал, 7 серий",desc:"На маленький рыбацкий остров приезжает молодой священник, и в общине начинаются чудеса, которые быстро становятся пугающими. Медленный, вдумчивый хоррор Майка Флэнагана.",note:"Главный совет — не смотреть первые три серии поздно вечером. После третьей оторваться уже не получится (и придётся досматривать всё остальное). Отличный и яркий сюжет, полностью завершённая история от начала до конца. Один из лучших мини-сериалов, что я видел.",warn:"Первые три серии не смотреть поздно вечером",img:"img/mass.jpg",fit:"contain",who:["m","f"]},
+{id:"wife",ru:"Хорошая жена",en:"The Good Wife",origin:"w",y1:2009,y2:2016,seasons:7,status:"done",g:["law","drama"],extra:"",desc:"После громкого скандала с мужем-прокурором Алисия Флоррик после долгого перерыва возвращается в адвокатуру. Дела недели плюс большая история о политике и власти.",note:"От лица Джулианны Маргулис (звезда «Скорой помощи») — про женщину, вынужденную начать карьеру заново и пойти стажёром-юристом в фирму бывшего однокурсника. Стандартный юридический сериал, где каждая серия условно независима от других (хотя есть общая сюжетная линия). В целом удивительно ровный на протяжении всех сезонов.",warn:"",img:"img/wife.jpg",fit:"contain",who:["f"]},
+{id:"fight",ru:"Хорошая борьба",en:"The Good Fight",origin:"w",y1:2017,y2:2022,seasons:6,status:"done",g:["law","drama"],extra:"продолжение «Хорошей жены»",desc:"Диана Локхарт теряет сбережения в финансовой афере и начинает заново в чикагской фирме. Острее и злободневнее, чем «Хорошая жена».",note:"Продолжение «Хорошей жены» и скорее сериал для фанатов. Неплохо, но как будто чуть слабее предшественника.",warn:"Скорее для фанатов «Хорошей жены»",img:"img/fight.jpg",fit:"contain",who:["f"]},
+{id:"peaky",ru:"Острые козырьки",en:"Peaky Blinders",origin:"w",y1:2013,y2:2022,seasons:6,status:"done",g:["crime","drama"],extra:"",desc:"Бирмингем после Первой мировой: семья Шелби во главе с Томасом (Киллиан Мёрфи) строит криминальную империю. Стиль, музыка и харизма.",note:"Классика промышленного послевоенного Бирмингема. Мрачно, кратко, красиво.",warn:"",img:"img/peaky.jpg",fit:"contain",who:["m"]},
+{id:"bsg",ru:"Звёздный крейсер «Галактика»",en:"Battlestar Galactica",origin:"w",y1:2004,y2:2009,seasons:4,status:"done",g:["scifi","drama"],extra:"версия 2004 года",desc:"Машины-сайлоны уничтожили колонии людей. Последний военный корабль ведёт горстку выживших на поиски легендарной Земли. Фантастика, которая на самом деле про политику, веру и выбор.",note:"Отличный сериал, который обязательно надо начать смотреть правильно: с двух пилотных эпизодов, не входящих в сам сериал. Иначе невозможно понять сюжет.",warn:"Начинать с мини-сериала 2003 года (2 части)",img:"img/bsg.jpg",fit:"contain",who:["m","f"]},
+{id:"firefly",ru:"Светлячок",en:"Firefly",origin:"w",y1:2002,y2:2002,seasons:1,status:"done",g:["scifi","west"],extra:"14 серий, продолжение — фильм «Миссия «Серенити»» (2005)",desc:"Космический вестерн Джосса Уидона: экипаж маленького транспортника «Серенити» перебивается контрабандой на окраинах обжитой галактики. Закрыт после одного сезона и стал культовым.",note:"Редкий жанр космического вестерна. Легко и симпатично. Очень жаль, что сериал свернули после выхода фильма: могла бы получиться неплохая вселенная.",warn:"",img:"img/firefly.jpg",fit:"contain",who:["m","f"]},
+{id:"reacher",ru:"Джек Ричер",en:"Reacher",origin:"w",y1:2022,y2:null,seasons:4,status:"on",g:["thr","crime"],extra:"продлён на 5-й сезон",desc:"Бывший военный следователь бродит по Америке без вещей и адреса и каждый раз оказывается в центре заговора. По романам Ли Чайлда, в главной роли Алан Ричсон.",note:"Guilty pleasure. Фильм-эпос, где хороший герой неуязвим и всегда победит плохих. Не без самоиронии и вообще юмора. Ежегодное развлечение: отдохнуть и посмотреть.",warn:"",img:"img/reacher.jpg",fit:"contain",who:["m"]},
+{id:"land",ru:"Лэндмен",en:"Landman",origin:"w",y1:2024,y2:null,seasons:2,status:"on",g:["drama","west"],extra:"3-й сезон снимается",desc:"Кризис-менеджер нефтяной компании Томми Норрис (Билли Боб Торнтон) разруливает дела в западном Техасе между нефтяниками, картелем и собственной семьёй. Тейлор Шеридан.",note:"От создателей «Йеллоустоуна». Первый сезон отличный. Второй пугающим образом напоминает мелодраму (но всё спасает последняя серия). Тревожно, каким выйдет третий.",warn:"2-й сезон слабее, но финал спасает",img:"img/land.jpg",fit:"contain",who:["m"]}
+];
+/* ===== конец данных ===== */
+/* Иллюстрации: свои рисунки по атмосфере сериала, viewBox 400x150 */
+const rep=(n,f)=>Array.from({length:n},(_,i)=>f(i)).join("");
+const rnd=(()=>{let s=7;return()=>(s=s*16807%2147483647)/2147483647})();
+const stars=(n,h)=>rep(n,()=>`<circle cx="${(rnd()*400).toFixed(0)}" cy="${(rnd()*h).toFixed(0)}" r="${(rnd()*1.2+.4).toFixed(1)}" fill="#fff" opacity="${(rnd()*.6+.3).toFixed(2)}"/>`);
+const sky=(id,a,b)=>`<defs><linearGradient id="${id}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${a}"/><stop offset="1" stop-color="${b}"/></linearGradient></defs><rect width="400" height="150" fill="url(#${id})"/>`;
+const pines=(y,c,n,sz)=>rep(n,i=>{const x=i*(400/(n-1))+(rnd()*14-7),h=sz*(.7+rnd()*.6);return `<path d="M${x} ${y-h}L${x+h*.32} ${y}H${x-h*.32}Z" fill="${c}"/>`});
+const ART={
+bar:sky("gbar","#1c0b29","#5b2a86")+rep(3,r=>rep(9,i=>`<rect x="${40+i*36}" y="${18+r*30}" width="9" height="22" rx="3" fill="${["#e04f8a","#f3c76b","#5fd3c4","#d7263d"][(i+r)%4]}" opacity=".75"/>`)+`<rect x="30" y="${41+r*30}" width="340" height="3" fill="#3a1f4a"/>`)+`<rect x="0" y="108" width="400" height="42" fill="#3a2218"/><rect x="0" y="104" width="400" height="7" fill="#6b4a2e"/><path d="M168 104c0-18 10-26 32-26s32 8 32 26z" fill="#111"/><circle cx="200" cy="92" r="12" fill="#2a2a2a" stroke="#e8e0d0" stroke-width="2"/>${rep(8,i=>`<circle cx="${200+8*Math.cos(i*.8)}" cy="${92+8*Math.sin(i*.8)}" r="1.6" fill="#e8e0d0"/>`)}<path d="M160 76c8-12 72-12 80 0l-8 4c-8-7-56-7-64 0z" fill="#111"/><text x="330" y="96" font-family="Unbounded,sans-serif" font-size="20" font-weight="700" fill="#ff7ab8" text-anchor="middle" style="filter:drop-shadow(0 0 6px #ff4fa0)">БАР</text>`,
+vamp:sky("gvamp","#16203d","#7a3d6e")+stars(30,90)+`<circle cx="300" cy="50" r="30" fill="#f3e6c4"/><circle cx="312" cy="44" r="30" fill="#7a3d6e" opacity=".15"/><path d="M0 112h400v38H0z" fill="#1a1426"/><path d="M40 112V84h30v28zM70 92h90v20H70zM160 74h28v38h-28zM188 92h110v20H188zM298 80h30v32h-30z" fill="#4a2f3e"/>${[40,160,298].map(x=>rep(4,i=>`<rect x="${x+i*8}" y="${x==160?68:x==40?78:74}" width="5" height="6" fill="#4a2f3e"/>`)).join("")}<path d="M160 74l14-16 14 16z" fill="#3a2230"/>${[22,350,372].map(x=>`<rect x="${x}" y="40" width="5" height="76" fill="#f2eee6"/>${rep(5,i=>`<rect x="${x}" y="${48+i*13}" width="5" height="2" fill="#222"/>`)}`).join("")}<path d="M230 30c6-6 10 0 14-4 2 4 6 4 8 0 4 4 8-2 14 4-6 0-10 4-14 2-4 4-6 4-8 0-4 2-8-2-14-2z" fill="#111"/>`,
+radar:sky("grad","#081530","#2b59c3")+stars(40,70)+`<path d="M330 8L250 60" stroke="#ffe8a3" stroke-width="3" stroke-linecap="round" opacity=".9"/><circle cx="250" cy="60" r="5" fill="#fff4c9"/><g stroke="#9fb3d9" stroke-width="1.4" opacity=".9">${rep(9,i=>`<line x1="${40+i*20}" y1="40" x2="${40+i*20}" y2="122"/>`)}${rep(5,i=>`<line x1="40" y1="${40+i*20}" x2="200" y2="${40+i*20}"/>`)}<line x1="40" y1="40" x2="200" y2="122"/><line x1="200" y1="40" x2="40" y2="122"/></g>`+pines(130,"#0b1a2e",16,46)+`<rect y="128" width="400" height="22" fill="#081221"/>`,
+topi:sky("gtopi","#7f8d86","#c9d2c4")+`<path d="M250 98V64h26v34z" fill="#3a3f3a"/><path d="M252 64c0-10 11-12 11-22 0 10 11 12 11 22z" fill="#2d322e"/><rect x="261" y="30" width="4" height="12" fill="#2d322e"/><rect x="258" y="74" width="8" height="12" fill="#c9d2c4" opacity=".5"/>`+pines(100,"#4a5650",14,34)+`<rect y="98" width="400" height="52" fill="#4f5d4f"/><ellipse cx="170" cy="122" rx="150" ry="14" fill="#7f8d86" opacity=".7"/>${rep(22,i=>{const x=10+i*18+rnd()*8;return `<path d="M${x} 150c0-18 3-28 6-38" stroke="#2f3a30" stroke-width="2" fill="none"/>`})}<rect y="80" width="400" height="12" fill="#fff" opacity=".25"/><rect y="104" width="400" height="8" fill="#fff" opacity=".2"/>`,
+slow:sky("gslow","#3a4048","#7b8794")+rep(6,i=>{const x=i*68,h=70+((i*29)%3)*8;return `<rect x="${x}" y="${150-h-20}" width="66" height="${h}" fill="${i%2?"#4a3f3a":"#5a4a42"}"/><rect x="${x+46}" y="${150-h-34}" width="8" height="14" fill="#3a302c"/>${rep(2,r=>rep(2,c=>`<rect x="${x+12+c*26}" y="${150-h-8+r*24}" width="14" height="16" fill="${i==2&&r==0&&c==1?"#f3c76b":"#2a2624"}"/>`))}`})+`<rect y="130" width="400" height="20" fill="#2a2d33"/><rect x="60" y="138" width="120" height="3" fill="#7b8794" opacity=".5"/>${rep(40,()=>{const x=rnd()*400,y=rnd()*130;return `<line x1="${x}" y1="${y}" x2="${x-4}" y2="${y+12}" stroke="#cfd6de" stroke-width="1" opacity=".45"/>`})}`,
+yell:sky("gyell","#f6b36b","#8bb8d8")+`<circle cx="90" cy="70" r="20" fill="#ffe2a8"/><path d="M0 100L70 52 120 80 190 30 260 78 320 44 400 90V150H0z" fill="#6f7f95"/><path d="M188 32l12 9-9-2zM318 46l10 8-8-1z" fill="#fff"/><path d="M0 110L90 78 170 104 260 74 400 108V150H0z" fill="#4c5a45"/><rect y="118" width="400" height="32" fill="#8a7a45"/>${rep(11,i=>`<rect x="${12+i*38}" y="108" width="5" height="26" fill="#3e2b1c"/>`)}<rect x="0" y="114" width="400" height="3" fill="#3e2b1c"/><rect x="0" y="124" width="400" height="3" fill="#3e2b1c"/>`+`<path d="M340 116l12-50 12 50zM366 116l9-36 9 36z" fill="#2e3a2a"/>`,
+mass:sky("gmass","#0d1f33","#3a5f7a")+stars(25,60)+`<circle cx="70" cy="40" r="16" fill="#e8eef2"/><path d="M120 112c40-30 120-40 200 0z" fill="#22303a"/><rect x="200" y="70" width="44" height="34" fill="#e9e4da"/><path d="M196 72l26-18 26 18z" fill="#c9c2b4"/><rect x="214" y="38" width="16" height="22" fill="#e9e4da"/><path d="M212 40l10-14 10 14z" fill="#c9c2b4"/><rect x="221" y="14" width="2" height="12" fill="#e9e4da"/><rect x="217" y="18" width="10" height="2" fill="#e9e4da"/>${rep(3,i=>`<rect x="${206+i*12}" y="80" width="6" height="12" rx="3" fill="#f3c76b"/>`)}<rect y="110" width="400" height="40" fill="#16324a"/>${rep(6,i=>`<path d="M${i*70} ${124+i%2*10}q15-6 30 0t30 0" stroke="#5f86a3" stroke-width="2" fill="none"/>`)}`,
+wife:sky("gwife","#e4edf3","#a9c3d6")+rep(9,i=>{const h=50+((i*37)%5)*14;return `<rect x="${i*46}" y="${120-h}" width="40" height="${h}" fill="#7d97ab" opacity=".55"/>`})+`<path d="M110 62L200 30 290 62z" fill="#f4f1ea"/><rect x="110" y="62" width="180" height="8" fill="#e1dbcf"/>${rep(6,i=>`<rect x="${120+i*30}" y="72" width="12" height="44" fill="#f4f1ea"/>`)}<rect x="104" y="116" width="192" height="8" fill="#e1dbcf"/><rect y="124" width="400" height="26" fill="#5c6b78"/>`,
+fight:sky("gfight","#0b2b33","#0e7c86")+rep(10,i=>{const h=50+((i*53)%6)*12;return `<rect x="${i*41}" y="${126-h}" width="36" height="${h}" fill="#082027"/>${rep(Math.floor(h/16),r=>`<rect x="${i*41+8}" y="${126-h+8+r*16}" width="5" height="6" fill="#f3c76b" opacity="${rnd()>.5?.8:.15}"/>`)}`})+`<rect y="124" width="400" height="26" fill="#05161b"/><g fill="#e9c46a"><rect x="296" y="30" width="4" height="70"/><rect x="262" y="38" width="72" height="3"/><path d="M262 41l-12 24h24zM334 41l-12 24h24z" opacity=".9"/><rect x="284" y="98" width="28" height="5"/></g>`,
+peaky:sky("gpeaky","#4a3b30","#a88a6a")+rep(7,i=>`<circle cx="${70+i*10+rnd()*20}" cy="${40-i*6}" r="${10+i*3}" fill="#6f625a" opacity=".45"/>`)+rep(7,i=>`<circle cx="${250+i*12+rnd()*20}" cy="${50-i*6}" r="${8+i*3}" fill="#6f625a" opacity=".4"/>`)+`<rect x="60" y="40" width="16" height="70" fill="#2e211a"/><rect x="246" y="52" width="14" height="60" fill="#2e211a"/><rect y="96" width="400" height="54" fill="#5a3426"/>${rep(10,r=>rep(20,c=>`<rect x="${c*20+(r%2)*10}" y="${96+r*6}" width="18" height="4" fill="#6b3d2c"/>`))}<path d="M150 132c4-22 96-22 100 0z" fill="#1b1714"/><path d="M134 134c20-6 112-6 132 0-20 6-112 6-132 0z" fill="#26201b"/>`,
+bsg:sky("gbsg","#04060d","#1a2340")+stars(70,150)+`<path d="M0 150c80-40 320-40 400 0z" fill="#2b3f6b"/><path d="M0 150c80-40 320-40 400 0" stroke="#7fa2e0" stroke-width="2" fill="none" opacity=".6"/><g fill="#8d939e"><path d="M70 62h220l20 10-20 10H70l-10-10z"/><rect x="110" y="52" width="120" height="10"/><rect x="110" y="82" width="120" height="10"/></g><g fill="#5b616b">${rep(8,i=>`<rect x="${80+i*26}" y="66" width="16" height="12"/>`)}</g><rect x="50" y="66" width="10" height="12" fill="#ffb36b"/><circle cx="50" cy="72" r="9" fill="#ffb36b" opacity=".35"/>${rep(3,i=>`<path d="M${330+i*18} ${40+i*12}l10 3-10 3z" fill="#c9ced6"/>`)}`,
+firefly:sky("gfire","#e8743b","#f7c873")+`<circle cx="320" cy="34" r="16" fill="#fff1d0"/><circle cx="356" cy="52" r="8" fill="#fff1d0" opacity=".8"/><path d="M0 112h60V88h50v24h120V96h40v16h130v38H0z" fill="#9a4a24"/><rect y="118" width="400" height="32" fill="#c26a35"/><g fill="#3a2a22"><path d="M150 52h56l14 8-14 8h-56l-10-8z"/><circle cx="148" cy="64" r="7"/><circle cx="208" cy="64" r="7"/></g><circle cx="140" cy="62" r="5" fill="#ffd37a"/>`,
+reacher:sky("greach","#2b2a4a","#e07a4a")+`<rect y="96" width="400" height="54" fill="#3a2e2a"/><path d="M170 96h60l90 54H80z" fill="#2a2524"/>${rep(5,i=>`<rect x="${198-i*.5}" y="${100+i*10}" width="${4+i}" height="${4+i}" fill="#f3e6c4"/>`)}<g fill="#141018"><circle cx="276" cy="82" r="5"/><path d="M270 88h12l2 20h-4l-2 18h-4l-1-18-2 18h-4z"/></g><rect x="70" y="40" width="4" height="58" fill="#141018"/><rect x="40" y="30" width="64" height="20" rx="3" fill="#d7263d"/><text x="72" y="45" font-family="Onest,sans-serif" font-size="13" font-weight="600" fill="#fff" text-anchor="middle">MOTEL</text>`,
+land:sky("gland","#f5b041","#d35400")+`<circle cx="300" cy="96" r="30" fill="#ffe08a"/><rect y="104" width="400" height="46" fill="#5a3010"/><g stroke="#1e130b" stroke-width="5" stroke-linecap="round" fill="none"><path d="M120 104l26-44 26 44"/><path d="M96 64l100-18"/></g><path d="M86 58c6-8 20-8 20 6l-8 14z" fill="#1e130b"/><g stroke="#1e130b" stroke-width="3"><path d="M40 104L56 30 72 104M44 84h24M48 64h16"/></g>`
+};
+const ICON={m:'<svg viewBox="0 0 24 24" role="img" aria-label="мальчик"><circle cx="12" cy="7" r="4" fill="#2b59c3"/><path d="M4 22c0-5 3.6-8 8-8s8 3 8 8z" fill="#2b59c3"/></svg>',f:'<svg viewBox="0 0 24 24" role="img" aria-label="девочка"><circle cx="12" cy="7" r="4" fill="#e04f8a"/><path d="M12 13c-3 0-5 2-6.5 9h13C17 15 15 13 12 13z" fill="#e04f8a"/></svg>'};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const pl=(n,a,b,c)=>{const m=n%10,h=n%100;return m==1&&h!=11?a:m>=2&&m<=4&&(h<10||h>=20)?b:c};
+const aud=s=>s.who.length==2?"Для всех":s.who[0]=="m"?"Больше любят мальчики":"Больше любят девочки";
+const years=s=>s.y2===null?s.y1+" — сейчас":s.y1===s.y2?String(s.y1):s.y1+"–"+s.y2;
+const col=s=>G[s.g[0]][1];
+const F={origin:"all",genre:"all",status:"all",len:"all",aud:"all",q:""};
+try{Object.assign(F,JSON.parse(localStorage.getItem("serials-f")||"{}"))}catch(e){}
+const OPT={origin:[["all","Все"],["ru","Российские"],["w","Зарубежные"]],status:[["all","Любой"],["done","Завершён"],["on","Продолжается"]],aud:[["all","Все"],["m","Больше любят мальчики","","m"],["f","Больше любят девочки","","f"],["mf","Для всех","","mf"]],len:[["all","Любая"],["short","Один сезон"],["long","Несколько сезонов"]],genre:[["all","Все"]].concat(Object.entries(G).map(([k,v])=>[k,v[0],v[1]]))};
+const ok=s=>(F.origin=="all"||s.origin==F.origin)&&(F.genre=="all"||s.g.includes(F.genre))&&(F.status=="all"||s.status==F.status)&&(F.aud=="all"||s.who.join("")==F.aud)&&(F.len=="all"||(F.len=="short")==(s.seasons==1))&&(!F.q||[s.ru,s.alt,s.en,s.desc,s.note].join(" ").toLowerCase().includes(F.q.toLowerCase()));
+const card=s=>{
+const st=s.status=="on"?'<span class="st on">Продолжается</span>':s.status=="done"?'<span class="st done">Завершён</span>':"";
+const orig=[s.en,s.alt].filter(Boolean).map(esc).join(" · ");
+return `<article class="card" id="c-${s.id}" style="--c:${col(s)}">
+${s.img?`<div class="art photo${s.fit?" contain":""}">${s.fit?`<div class="blur" style="background-image:url(${esc(s.img)})"></div>`:""}<img src="${esc(s.img)}" alt="${esc(s.ru)}" loading="lazy"></div>`:`<div class="art" aria-hidden="true"><svg viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice">${ART[s.id]||""}</svg></div>`}
+<div class="top"><div><h3>${esc(s.ru)}</h3>${orig?`<div class="orig">${orig}</div>`:""}</div>${s.who.length?`<div class="who" title="${aud(s)}">${s.who.map(w=>ICON[w]||"").join("")}</div>`:""}</div>
+<div class="meta"><span class="y">${years(s)}</span><span>${s.seasons} ${pl(s.seasons,"сезон","сезона","сезонов")}${s.extra?", "+esc(s.extra):""}</span>${st}</div>
+<p class="desc">${esc(s.desc)}</p>
+${s.warn?`<p class="warn">⚠ ${esc(s.warn)}</p>`:""}
+${s.note?`<div class="note"><b>Отзыв Ивана</b>${s.note.split("\n").map(t=>`<p>${esc(t)}</p>`).join("")}</div>`:""}
+<div class="tags">${s.g.map(k=>`<span>${G[k][0]}</span>`).join("")}</div>
+<div class="lnk"><a href="https://www.imdb.com/find/?q=${encodeURIComponent(s.imdb||s.en||s.ru)}&amp;s=tt" target="_blank" rel="noopener">Постер и трейлер на IMDb ↗</a></div>
+</article>`};
+const rack=document.getElementById("rack");
+rack.innerHTML=S.map((s,i)=>{const w=26+Math.min(s.seasons,7)*9,h=150+((i*37)%5)*12;return `<button class="spine" type="button" data-id="${s.id}" style="width:${w}px;height:${h}px;background:${col(s)}" title="${esc(s.ru)}"><span>${esc(s.ru)}</span></button>`}).join("");
+document.getElementById("legend").innerHTML=Object.values(G).map(v=>`<span><i style="background:${v[1]}"></i>${v[0]}</span>`).join("")+"<span>Толщина корешка — число сезонов</span>";
+const seg=(k)=>{document.getElementById("f-"+k).innerHTML=OPT[k].map(o=>`<button type="button" data-k="${k}" data-v="${o[0]}" aria-pressed="${F[k]==o[0]}">${o[2]?`<i style="background:${o[2]}"></i>`:""}${o[3]?`<span class="ic">${o[3].split("").map(w=>ICON[w]).join("")}</span>`:""}${o[1]}</button>`).join("")};
+const list=document.getElementById("list");
+const render=()=>{
+["origin","genre","status","len","aud"].forEach(seg);
+const vis=S.filter(ok);
+document.getElementById("count").textContent=`Показано ${vis.length} из ${S.length}`;
+rack.querySelectorAll(".spine").forEach(b=>b.classList.toggle("off",!vis.some(s=>s.id==b.dataset.id)));
+const grp=[["ru","Российские"],["w","Зарубежные"]].map(([o,t])=>{const a=vis.filter(s=>s.origin==o);return a.length?`<h2>${t}</h2><div class="grid">${a.map(card).join("")}</div>`:""}).join("");
+list.innerHTML=grp||'<p class="empty">Под такие фильтры ничего не нашлось.</p>';
+try{localStorage.setItem("serials-f",JSON.stringify(F))}catch(e){}
+};
+document.querySelector(".controls").addEventListener("click",e=>{const b=e.target.closest("button[data-k]");if(!b)return;F[b.dataset.k]=b.dataset.v;render()});
+const q=document.getElementById("q");q.value=F.q;
+q.addEventListener("input",()=>{F.q=q.value.trim();render()});
+document.getElementById("reset").addEventListener("click",()=>{Object.assign(F,{origin:"all",genre:"all",status:"all",len:"all",aud:"all",q:""});q.value="";render()});
+rack.addEventListener("click",e=>{const b=e.target.closest(".spine");if(!b)return;let c=document.getElementById("c-"+b.dataset.id);
+if(!c){Object.assign(F,{origin:"all",genre:"all",status:"all",len:"all",aud:"all",q:""});q.value="";render();c=document.getElementById("c-"+b.dataset.id)}
+c.scrollIntoView({behavior:matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"center"});c.classList.add("flash");setTimeout(()=>c.classList.remove("flash"),1600)});
+render();
+}
+</script>
+</body>
+</html>
